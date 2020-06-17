@@ -1,6 +1,7 @@
 from django.db import models
 from realtor.models import Realtor
 from datetime import datetime
+from django.conf import settings
 
 
 class Apartments(models.Model):
@@ -18,6 +19,7 @@ class Apartments(models.Model):
     apartment_type = models.ForeignKey(
         'ApartmentType', on_delete=models.SET_NULL, null=True, blank=True, default=None)
     is_published = models.BooleanField(default=True)
+    is_favorite = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     list_date = models.DateTimeField(default=datetime.now)
     photo_0 = models.ImageField(upload_to="photos/%Y/%m/%d/")
     photo_1 = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)

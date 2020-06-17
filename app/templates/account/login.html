@@ -3,6 +3,7 @@
 <main>
     <div class="register-form d-block col-12">
         <div class="container">
+            {% include 'partials/_alerts.html'%}
             <form action="{% url 'login' %}" method="POST" class="col-6">
                 {% csrf_token %}
                 <h2>Вхід в <span>особистий кабінет</span></h2>

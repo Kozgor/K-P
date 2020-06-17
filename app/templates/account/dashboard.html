@@ -1,4 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Dashboard</h2>
+{% load static %}
+<div class="dashboard col-12">
+    <h2>Dashboard</h2>
+    <div class="container col-12 d-flex">
+        <div class="info-dash col-6">
+            <img class="profile-default" src="{% static 'img/default-profile.png' %}" alt="default-picture">
+            <ul class="profile-info">
+                <li>Username: <span>{{user.username}}</span></li>
+            </ul>
+        </div>
+        <nav class="col-6">
+            {% include 'partials/_alerts.html'%}
+            <h2>Обране</h2>
+
+        </nav>
+    </div>
+</div>
+
 {% endblock %}

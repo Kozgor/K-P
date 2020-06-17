@@ -1,0 +1,22 @@
+.dashboard {
+    display: block;
+    height: 900px;
+    h2 {
+        text-align: center;
+    }
+    nav {
+        display: block;
+        border: solid 2px $font-h1--color-primary;
+        float: right;
+    }
+    ul {
+        list-style-type: none;
+    }
+    .info-dash {
+        img {
+            width: 200px;
+            height: 200px;
+            border: solid 1px $font-h1--color-primary;
+        }
+    }
+}

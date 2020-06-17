@@ -16,8 +16,17 @@
                             <span>GREAT<br>DECISION</span>
                         </a>
                     </div>
-                    <a class="offset-5 col-1 align-self-center enter" href="/account/login">Вхід</a>
-                    <a class="col-1 align-self-center register" href="/account/register">Реєстрація</a>
+                    {% if user.is_authenticated %}
+                        <a class="offset-2 col-4 align-self-center enter" href="{% url 'dashboard' %}">Welcome, {{ user.username }}</a>
+                        <a class="col-1 align-self-center" href="javascript:{document.getElementById('logout').submit()}" >Вихід</a>
+                        <form action="{% url 'logout' %}" id="logout" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden">
+                        </form>
+                    {% else %}
+                        <a class="offset-2 col-4 align-self-center enter" href="{% url 'login' %}">Вхід</a>
+                        <a class="col-1 align-self-center" href="{% url 'register' %}">Реєстрація</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

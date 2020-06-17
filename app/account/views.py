@@ -1,13 +1,27 @@
 from django.shortcuts import render, redirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
+from apartments.models import Apartments
 
 
 def login(request):
     data = {"header_h1": "Вхід",
             "header_p": "Головна >> Вхід"}
-    return render(request, 'account/login.html', context=data)
+    if request.method == 'POST':
+        username = request.POST['Username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'User logged')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid login or password!')
+            return redirect('login')
+    else:
+        return render(request, 'account/login.html', context=data)
 
 
 def register(request):
@@ -21,10 +35,10 @@ def register(request):
 
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
-                print("user exists")
+                messages.error(request, "User already exists!")
                 return redirect("register")
             if User.objects.filter(email=email).exists():
-                print("Email exists")
+                messages.error(request, "This email already exists!")
                 return redirect("register")
             user = User.objects.create_user(
                 username=username,
@@ -34,10 +48,10 @@ def register(request):
                 last_name=last_name,
             )
             user.save()
-            print('registered')
+            messages.success(request, "Success! Now you can log in!")
             return redirect('login')
         else:
-            print("passwords do not match")
+            messages.error(request, "Passwords not match!")
             return redirect('register')
     data = {"header_h1": "Реєстрація",
             "header_p": "Головна >> Реєстрація"}
@@ -45,7 +59,10 @@ def register(request):
 
 
 def logout(request):
-    return render(request, 'account/logout.html')
+    if request.method == 'POST':
+        auth.logout(request)
+        messages.success(request, "Successfully logged out!")
+    return redirect('index')
 
 
 def dashboard(request):
